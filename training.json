@@ -1,0 +1,66 @@
+{
+  "title": "Morris Worm Forensics",
+  "estimatedDuration": 60,
+  "description": "Investigate a safe simulation of a Morris Worm incident. The learner identifies network, process, and file-system artifacts related to a historical worm attack.",
+  "prerequisites": [
+    "Basic Linux command line",
+    "Basic networking",
+    "Process and file timestamp analysis"
+  ],
+  "objectives": [
+    "Find a suspicious listening service",
+    "Identify worm-related artifacts",
+    "Create a simple incident timeline",
+    "Recover the final flag"
+  ],
+  "levels": [
+    {
+      "title": "Incident briefing",
+      "level_type": "INFO_LEVEL",
+      "content": "<p>A historical Morris Worm style incident was reported in the target network. Your task is to investigate the target host and collect evidence. Connect to the <strong>client</strong> host as the analyst and begin from there.</p>"
+    },
+    {
+      "title": "Find the target",
+      "level_type": "TRAINING_LEVEL",
+      "content": "<p>Scan the target network and identify the host that represents the infected machine.</p>",
+      "answer_variable_name": "target_ip",
+      "answer": "10.1.20.5",
+      "hints": [
+        "The target network is behind the router.",
+        "Try scanning 10.1.20.0/24 from the client host."
+      ]
+    },
+    {
+      "title": "Suspicious port",
+      "level_type": "TRAINING_LEVEL",
+      "content": "<p>Find the TCP port used by the simulated worm transfer mechanism on the infected host.</p>",
+      "answer_variable_name": "worm_port",
+      "answer": "9999",
+      "hints": [
+        "Use nmap or netstat/ss after connecting to the server.",
+        "The Morris lesson discusses a netcat listener."
+      ]
+    },
+    {
+      "title": "Artifact analysis",
+      "level_type": "TRAINING_LEVEL",
+      "content": "<p>Find the created attack artifact under <code>/opt/morris</code>. Submit the artifact filename.</p>",
+      "answer_variable_name": "artifact",
+      "answer": "badfile",
+      "hints": [
+        "List files in /opt/morris.",
+        "Use stat to inspect timestamps."
+      ]
+    },
+    {
+      "title": "Final flag",
+      "level_type": "TRAINING_LEVEL",
+      "content": "<p>After confirming the process, port, and file evidence, recover the flag from the infected host.</p>",
+      "answer_variable_name": "flag",
+      "answer": "FLAG{morris_worm_forensics_port_9999}",
+      "hints": [
+        "The flag is stored in the victim user's home directory on the server."
+      ]
+    }
+  ]
+}

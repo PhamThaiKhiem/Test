@@ -1,0 +1,2 @@
+This training scenario is inspired by the Morris Worm materials from SEED Labs and the digital-forensics-lab teaching materials.
+It is an independent safe simulation and does not include real exploit code.

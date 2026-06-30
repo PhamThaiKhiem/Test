@@ -1,0 +1,58 @@
+---
+# This is a role for the host attacker.
+# These changes will affect only the host attacker.
+
+# ==== users ====
+
+- name: Create user morris
+  user:
+    name: morris
+    password: "{{ 'morris' | password_hash('sha512') }}"
+    shell: /bin/bash
+    state: present
+    createhome: yes
+    update_password: always
+
+# ==== tools ====
+
+- name: Install attack tools
+  apt:
+    name:
+      - nmap
+      - netcat-openbsd
+      - iputils-ping
+    state: present
+    update_cache: yes
+
+# ==== artifacts ====
+
+- name: Create attack workspace
+  file:
+    path: /home/morris/attack
+    state: directory
+    owner: morris
+    group: morris
+    mode: '0755'
+
+- name: Copy attack note
+  copy:
+    dest: /home/morris/attack/attack_note.txt
+    owner: morris
+    group: morris
+    mode: '0644'
+    content: |
+      Historical Morris Worm simulation note
+      Target range observed by the attacker: 10.1.20.0/24
+      Interesting target: server (10.1.20.5)
+      Transfer port used by infected hosts: TCP/9999
+
+- name: Add attack command history
+  copy:
+    dest: /home/morris/.bash_history
+    owner: morris
+    group: morris
+    mode: '0600'
+    content: |
+      ping -c 1 server
+      nmap -sV 10.1.20.5
+      nc -vz 10.1.20.5 9999

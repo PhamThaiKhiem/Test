@@ -1,0 +1,23 @@
+---
+# Basic configuration of all host devices
+
+- name: Install net-tools
+  apt:
+    name: net-tools
+    update_cache: yes
+
+- name: Install unzip
+  apt:
+    name: unzip
+
+- name: Install tcpdump
+  apt:
+    name: tcpdump
+
+- name: Install psmisc
+  apt:
+    name: psmisc
+
+- name: Install lsof
+  apt:
+    name: lsof

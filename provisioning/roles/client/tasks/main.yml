@@ -1,0 +1,35 @@
+---
+# This is a role for the host client.
+# You can write your tasks here.
+# These changes will affect only the host client.
+
+# ==== users ====
+
+- name: Create user analyst
+  user:
+    name: analyst
+    password: "{{ 'analyst' | password_hash('sha512') }}"
+    shell: /bin/bash
+    state: present
+    createhome: yes
+    update_password: always
+
+# ==== forensic tools ====
+
+- name: Install forensic utilities
+  apt:
+    name:
+      - nmap
+      - netcat-openbsd
+      - tree
+      - curl
+    state: present
+    update_cache: yes
+
+- name: Create investigation directory
+  file:
+    path: /home/analyst/investigation
+    state: directory
+    owner: analyst
+    group: analyst
+    mode: '0755'

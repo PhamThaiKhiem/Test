@@ -1,0 +1,80 @@
+---
+# This is a role for the host server.
+# You can write your tasks here.
+# These changes will affect only the host server.
+
+# ==== users ====
+
+- name: Create user victim
+  user:
+    name: victim
+    password: "{{ 'victim' | password_hash('sha512') }}"
+    shell: /bin/bash
+    state: present
+    createhome: yes
+    update_password: always
+
+# ==== services and artifacts ====
+
+- name: Install packages
+  apt:
+    name:
+      - netcat-openbsd
+      - iputils-ping
+    state: present
+    update_cache: yes
+
+- name: Create morris directory
+  file:
+    path: /opt/morris
+    state: directory
+    owner: victim
+    group: victim
+    mode: '0755'
+
+- name: Copy worm artifact
+  copy:
+    src: worm
+    dest: /opt/morris/worm
+    owner: victim
+    group: victim
+    mode: '0755'
+
+- name: Copy badfile artifact
+  copy:
+    src: badfile
+    dest: /opt/morris/badfile
+    owner: victim
+    group: victim
+    mode: '0644'
+
+- name: Copy flag
+  copy:
+    src: flag.txt
+    dest: /home/victim/flag.txt
+    owner: victim
+    group: victim
+    mode: '0400'
+
+- name: Copy morris listener service
+  copy:
+    src: morris-listener.service
+    dest: /etc/systemd/system/morris-listener.service
+    owner: root
+    group: root
+    mode: '0644'
+  notify: Reload systemd
+
+- name: Start morris listener service
+  systemd:
+    name: morris-listener
+    enabled: yes
+    state: started
+    daemon_reload: yes
+
+- name: Set artifact timestamp
+  shell: |
+    touch -t 202208030809.23 /opt/morris/worm
+    touch -t 202208030818.15 /opt/morris/badfile
+  args:
+    executable: /bin/bash

@@ -1,0 +1,1 @@
+FLAG{morris_worm_forensics_port_9999}
