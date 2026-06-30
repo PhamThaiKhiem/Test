@@ -1,0 +1,36 @@
+---
+- name: Configure common hosts
+  hosts: all
+  become: true
+  roles:
+    - hosts
+
+- name: Configure time synchronization
+  hosts: all
+  become: true
+  roles:
+    - chrony
+
+- name: Configure attacker
+  hosts: attacker
+  become: true
+  roles:
+    - attacker
+
+- name: Configure victims
+  hosts: victim1:victim2:victim3
+  become: true
+  roles:
+    - victim
+
+- name: Configure analyst
+  hosts: analyst
+  become: true
+  roles:
+    - analyst
+
+- name: Enable sandbox logging
+  hosts: all
+  become: true
+  roles:
+    - sandbox-logging

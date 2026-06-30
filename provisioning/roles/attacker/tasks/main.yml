@@ -1,0 +1,57 @@
+---
+- name: Install attacker tools
+  apt:
+    name:
+      - python3
+      - netcat-openbsd
+      - nmap
+      - tcpdump
+      - iputils-ping
+    state: present
+    update_cache: yes
+
+- name: Create attacker training user
+  user:
+    name: attacker
+    password: '$6$iDhKtv4GkuKhML3x$maYMHIFGqNjOm0vZBC9EjQJ8zg4LXDzvcTqYfhmaWaFxfhVkrbtFLeGoPbI04JtSQ9yq0COi.sLktZke5A/TR1'
+    shell: /bin/bash
+    groups: sudo
+    append: true
+
+- name: Allow attacker sudo without password
+  copy:
+    dest: /etc/sudoers.d/90-morris-attacker
+    content: "attacker ALL=(ALL) NOPASSWD:ALL\n"
+    owner: root
+    group: root
+    mode: '0440'
+
+- name: Create lab directory
+  file:
+    path: /home/attacker/morris
+    state: directory
+    owner: attacker
+    group: attacker
+    mode: '0755'
+
+- name: Copy safe worm simulator
+  copy:
+    src: worm_sim.py
+    dest: /home/attacker/morris/worm_sim.py
+    owner: attacker
+    group: attacker
+    mode: '0755'
+
+- name: Add attacker notes
+  copy:
+    dest: /home/attacker/morris/README.txt
+    owner: attacker
+    group: attacker
+    mode: '0644'
+    content: |
+      Morris Worm Lab - Attacker VM
+      Username: attacker
+      Password: attacker
+      This VM contains a SAFE simulator, not a real worm.
+      Run: cd ~/morris && ./worm_sim.py
+      Observe victims from the analyst VM with ps, ss, netstat, stat, and logs.

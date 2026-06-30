@@ -1,0 +1,4 @@
+---
+ansible_python_interpreter: /usr/bin/python3
+victim_id: 1
+victim_flag: FLAG{patient_zero_process}
