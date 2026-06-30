@@ -1,2 +1,0 @@
-Scenario inspired by Morris Worm teaching material and SEED Labs Morris Worm lab.
-This repository uses a safe simulator, not the original exploit code.
